@@ -1,46 +1,52 @@
 <?php
-/* 
- * Validación de sesión de usuarios ok
- * Seguridad de la aplicación en el home
- * Menú modular para el home
- * Validar si el usuario ya ha iniciado sesión
- * Si la sesión existe, redirigir a la página de inicio
- */
-include "conn.php";
+/*
+* Validación de Usuarios OK
+* Seguridad de la aplicación en el home
+*/
+include 'conn.php';
 session_start();
+/*
+* Validar si el usuario ya se encuentra logueado
+* Si el usuario ya se encuentra logueado, redirigirlo a la página de home
+ */
+if (isset($_SESSION['user'])) {
+    header('Location: home');
+    exit();
+}
 
 if (isset($_POST['btnlogin'])) {
     $login = $conn->prepare("SELECT * FROM user WHERE email = ?");
     $login->bindParam(1, $_POST['email']);
     $login->execute();
-    $row = $login->fetch(PDO::FETCH_ASSOC);
+    $result = $login->fetch(PDO::FETCH_ASSOC);
 
-    if (is_array($row)) {
-        if (password_verify($_POST['pass'], $row['pass'])) {
-            $_SESSION['user'] = $row['email'];
-            $_SESSION['id'] = $row['iduser'];
-            header("Location: home");
+    if (is_array($result)) {
+        if (password_verify($_POST['pass'], $result['pass'])) {
+            $_SESSION['user'] = $result['email'];
+            $_SESSION['id'] = $result['iduser'];
+            header('Location: home');
             exit();
-            } else {
+        }else {
             $msg = array("Contraseña incorrecta", "warning");
-            }
-        } else {
-        $msg = array("El correo no existe", "danger");
         }
+    }else {
+        $msg = array("El correo no existe", "danger");
     }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="es-CO" data-bs-theme="dark" class="h-100">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pio XI</title>
+    <title>Celia</title>
     <!--Logo Favicon-->
     <link rel="shortcut icon" href="../assets/img/logo.png" type="image/x-icon">
 
     <!--SEO Tags-->
-    <meta name="author" content="Pio XI">
+    <meta name="author" content="Celia">
     <meta name="description" content="Aplicativo web Bootstrap">
     <meta name="keywords" content="SENA, sena, Sena, Aplicativo, APLICATIVO, aplicativo">
 
@@ -77,13 +83,13 @@ if (isset($_POST['btnlogin'])) {
                     <h1 class="display-6">Inicio de Sesión</h1>
                 </div>
                 <form action="" method="post" enctype="application/x-www-form-urlencoded">
-                    <div class="mb-3 mt-3">
-                        <label for="email" class="form-label">Correo:</label>
+                    <div class="input-group mb-3 mt-3">
+                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
                         <input type="email" class="form-control" id="email" placeholder="Ingrese email" name="email"
                             required>
                     </div>
-                    <div class="mb-3 password-wrapper">
-                        <label for="pwd" class="form-label">Contraseña:</label>
+                    <div class="input-group mb-3 password-wrapper">
+                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
                         <input type="password" class="form-control" id="password" placeholder="Ingrese contraseña"
                             name="pass" required>
                         <span class="input-group pt-2 toggle-button eye-icon" onclick="password_show_hide();">
