@@ -1,18 +1,18 @@
 <?php
 /*
-* Validación de Usuarios OK
-* Seguridad de la aplicación en el home
-*/
+ * Validación de Usuarios OK
+ * Seguridad de la aplicación en el home
+ */
 include 'conn.php';
 session_start();
 /*
-* Validar si el usuario ya se encuentra logueado
-* Si el usuario ya se encuentra logueado, redirigirlo a la página de home
+ * Validar si el usuario ya se encuentra logueado
+ * Si el usuario ya se encuentra logueado, redirigirlo a la página de home
  */
 if (isset($_SESSION['user'])) {
     header('Location: home');
     exit();
-}
+    }
 
 if (isset($_POST['btnlogin'])) {
     $login = $conn->prepare("SELECT * FROM user WHERE email = ?");
@@ -26,13 +26,13 @@ if (isset($_POST['btnlogin'])) {
             $_SESSION['id'] = $result['iduser'];
             header('Location: home');
             exit();
-        }else {
+            } else {
             $msg = array("Contraseña incorrecta", "warning");
-        }
-    }else {
+            }
+        } else {
         $msg = array("El correo no existe", "danger");
+        }
     }
-}
 ?>
 
 <!DOCTYPE html>
@@ -89,10 +89,10 @@ if (isset($_POST['btnlogin'])) {
                             required>
                     </div>
                     <div class="input-group mb-3 password-wrapper">
-                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
                         <input type="password" class="form-control" id="password" placeholder="Ingrese contraseña"
                             name="pass" required>
-                        <span class="input-group pt-2 toggle-button eye-icon" onclick="password_show_hide();">
+                        <span class="input-group-text eye-icon" onclick="password_show_hide();">
                             <i class="bi bi-eye d-none" id="show_eye" style="font-size:20px"></i>
                             <i class="bi bi-eye-slash" id="hide_eye" style="font-size:20px"></i>
                         </span>

@@ -23,7 +23,9 @@ if (isset($_POST['btnforgot'])) {
 
        $subject = '=?UTF-8?B?'.base64_encode("Restablecer Contraseña"). "=?=";
 
-       $message = "Mensaje de prueba";
+       $message = "Restablecer Contraseña\n\n";
+       $message .= "Para restablecer su contraseña, haga clic en el siguiente enlace:\n\n";
+       $message .= "http://localhost/11_25/celia/app/resetpass?id=$id&token=$token"; 
 
        include 'config.mailer.php';
     }
