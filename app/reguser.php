@@ -105,8 +105,8 @@ if (isset($_POST['btn-reg'])) {
                             <input class="form-control" type="password" name="pass" id="password"
                                 placeholder="Ingrese su contraseña" required>
                             <span class="input-group-text" onclick="pass_show_hide();">
-                                <i class="bi bi-eye-fill d-none" id="showeye" style="font-size: 20px;"></i>
-                                <i class="bi bi-eye-slash-fill" id="hideeye" style="font-size: 20px;"></i>
+                                <i class="bi bi-eye-fill d-none" id="showeye"></i>
+                                <i class="bi bi-eye-slash-fill" id="hideeye"></i>
                             </span>
                         </div>
                     </div>

@@ -48,8 +48,8 @@ try {
 }
 
 /* Configurar cuenta de Correo Gmail 
-Activar Verificación en dos pasos 
-Contraseñas de aplicaciones
+*Activar Verificación en dos pasos 
+*Contraseñas de aplicaciones
 Crear una contraseña de aplicación para el correo PHPMailer
 https://myaccount.google.com/apppasswords?rapt=AEjHL4Ojwt_NkZIR0jwMoNqi4t0wwqgck3e729UMlFvhIiIQj0O15MA5uETJ_U4KyPdKRpIWX5sDIujQFhSQ2ShGbJ8qIyA3rLMfHr1n1pr7_aI4LSbz4b4
 */

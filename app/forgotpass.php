@@ -30,6 +30,7 @@ if (isset($_POST['btnforgot'])) {
        include 'config.mailer.php';
     }
 }
+/*Falta mensaje para indicar que el correo no existe*/ 
 
 ?>
 <!DOCTYPE html>

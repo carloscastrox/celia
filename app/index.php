@@ -1,18 +1,49 @@
 <?php
-/*
- * Validación de Usuarios OK
- * Seguridad de la aplicación en el home
+/* 
+SESIONES
+ * Validación de sesión de usuarios ok
+ * Seguridad de la aplicación en el home ok
+ * 
+ MENU MODULAR
+ * Menú modular para el home ok
+ * Validar si el usuario ya ha iniciado sesión ok
+ * Si la sesión existe, redirigir a la página de inicio ok
+
+ ROLES
+* Validar a los usuarios por roles ok
+* Direccionar a los usuarios a la página de home según su rol (homea, homec, homev, etc) ok
+* crear en la base de datos el campo rol y asignar el rol a cada usuario ok
+
+PERFIL 
+* Crear perfil de usuarios de acuerdo a su rol (Incluyendo imagen de perfil) OK
+* Formatear campo date en php OK
+* Actualizar los datos del perfil de usuario PENDIENTE
+
+CRUD 
+* Crear tabla Utilizando librerias datatables.net(inicializar, Responsive, language) OK
+* Activar Botones de exportación a Excel y PDF
+* Imprimir datos en una tabla dinamica OK
+* Insertar datos a la tabla dinamica PENDIENTE
+* Eliminar datos de la tabla dinamica OK
+* Editar datos de la tabla dinamica PENDIENTE
+
+Consultas INNER JOIN
+
+charset=utf8mb4 desde la conexión a la base de datos	
+
  */
 include 'conn.php';
 session_start();
-/*
- * Validar si el usuario ya se encuentra logueado
- * Si el usuario ya se encuentra logueado, redirigirlo a la página de home
- */
-if (isset($_SESSION['user'])) {
-    header('Location: home');
-    exit();
-    }
+
+switch (isset($_SESSION['rol'])) {
+
+    case 'admin':
+        header('Location: homea');
+        break;
+    case 'user':
+        header('Location: homeu');
+        break;
+}
 
 if (isset($_POST['btnlogin'])) {
     $login = $conn->prepare("SELECT * FROM user WHERE email = ?");
@@ -22,17 +53,36 @@ if (isset($_POST['btnlogin'])) {
 
     if (is_array($result)) {
         if (password_verify($_POST['pass'], $result['pass'])) {
-            $_SESSION['user'] = $result['email'];
-            $_SESSION['id'] = $result['iduser'];
-            header('Location: home');
-            exit();
-            } else {
-            $msg = array("Contraseña incorrecta", "warning");
+
+            // Verificar el rol de usuario
+            switch ($result['rol']) {
+
+                case 'admin':
+                    $_SESSION['user'] = $result['email'];
+                    $_SESSION['id'] = $result['iduser'];
+                    $_SESSION['rol'] = $result['rol'];
+                    header('Location: homea');
+                    break;
+
+                case 'user':
+                    $_SESSION['user'] = $result['email'];
+                    $_SESSION['id'] = $result['iduser'];
+                    $_SESSION['rol'] = $result['rol'];
+                    header('Location: homeu');
+                    break;
+
+                default:
+                    header('Location: ./');
+                    break;
             }
         } else {
-        $msg = array("El correo no existe", "danger");
+            $msg = array("Contraseña incorrecta", "warning");
         }
+    } else {
+        $msg = array("El correo no existe", "danger");
     }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -65,7 +115,7 @@ if (isset($_POST['btnlogin'])) {
 </head>
 
 <body>
-    <main class="form-signin m-auto pt-5 mt-4">
+    <main class="form-signin m-auto pt-4 mt-4">
         <div class="card">
             <div class="card-body">
 
@@ -78,23 +128,23 @@ if (isset($_POST['btnlogin'])) {
                 <?php } ?>
                 <!--Section alerts-->
 
-                <div class="text-center">
+                <div class="text-center py-2">
                     <img src="../assets/img/logo.png" alt="Logo" width="72" height="72">
                     <h1 class="display-6">Inicio de Sesión</h1>
                 </div>
                 <form action="" method="post" enctype="application/x-www-form-urlencoded">
                     <div class="input-group mb-3 mt-3">
                         <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                        <input type="email" class="form-control" id="email" placeholder="Ingrese email" name="email"
+                        <input type="email" class="form-control" id="email" placeholder="Ingrese su email" name="email"
                             required>
                     </div>
                     <div class="input-group mb-3 password-wrapper">
                         <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                        <input type="password" class="form-control" id="password" placeholder="Ingrese contraseña"
+                        <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña"
                             name="pass" required>
                         <span class="input-group-text eye-icon" onclick="password_show_hide();">
-                            <i class="bi bi-eye d-none" id="show_eye" style="font-size:20px"></i>
-                            <i class="bi bi-eye-slash" id="hide_eye" style="font-size:20px"></i>
+                            <i class="bi bi-eye d-none" id="show_eye"></i>
+                            <i class="bi bi-eye-slash" id="hide_eye"></i>
                         </span>
                     </div>
                     <div class="form-check mb-3">

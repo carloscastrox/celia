@@ -32,7 +32,6 @@ if (isset($_GET['id']) && isset($_GET['token'])) {
         $msg = array("El enlace es invalido o ha expirado", "danger");
     } 
 }
-
 ?>
 
 <!DOCTYPE html>
